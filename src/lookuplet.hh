@@ -9,9 +9,10 @@ class lookuplet : public lookuplet_glade
 {  
     friend class lookuplet_glade;
     bool on_query_key_press_event(GdkEventKey *ev);
-    void on_query_selection_received(GtkSelectionData *data, guint time);
     void on_prefs_clicked();
     void exit_lookuplet();
+public:
+    void on_clip_text_received(const gchar* text);
 };
 
 #endif
