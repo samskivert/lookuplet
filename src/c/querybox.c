@@ -43,8 +43,6 @@ key_pressed (GtkWidget* widget, GdkEvent* event, gpointer callback_data)
     keystr = convert_keysym_state_to_string(ek->keyval, ek->state);
     bindings = lk_prefs_get_bindings();
 
-    g_print("key pressed: %s (%d %d)\n", keystr, ek->state, ek->keyval);
-
     for (i = 0; i < bindings->len; i++) {
 	LkBinding* binding = LK_BINDING(g_ptr_array_index(bindings, i));
 	if (!strcmp(keystr, binding->key)) {
