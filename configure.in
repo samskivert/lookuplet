@@ -34,12 +34,11 @@ AM_MAINTAINER_MODE
 AM_ACLOCAL_INCLUDE(macros)
 AC_ISC_POSIX
 
-GNOME_INIT
+GNOME_INIT(applets)
 
 dnl Check for programs
 AC_PROG_CC
 AM_PROG_CC_STDC
-AC_ARG_PROGRAM
 AM_PROG_LIBTOOL
 
 dnl this should come after `AC_PROG_CC'

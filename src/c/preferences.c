@@ -453,3 +453,9 @@ lk_prefs_display ()
     /* and finally show our property box */
     gtk_widget_show_all(_prefBox);
 }
+
+void
+lk_prefs_display_applet (AppletWidget* applet, gpointer data)
+{
+    lk_prefs_display();
+}

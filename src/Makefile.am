@@ -20,6 +20,7 @@ INCLUDES = 						\
 lookuplet_LDADD = \
 	$(GNOME_LIBDIR) \
 	$(GNOMEUI_LIBS) \
+	$(GNOME_APPLETS_LIBS) \
 	$(INTLLIBS) 
 
 # currently the installation of these bitmaps wouldn't be necessary

@@ -19,25 +19,10 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef _PREFERENCES_H_
-#define _PREFERENCES_H_
+#ifndef _LOOKUPLET_H_
+#define _LOOKUPLET_H_
 
-#include <applet-widget.h>
-#include <gnome.h>
+/* Used to indicate whether or not we're running in applet mode. */
+extern int applet_mode;
 
-extern void
-lk_prefs_init (void);
-
-extern GPtrArray*
-lk_prefs_get_bindings (void);
-
-extern void
-lk_prefs_cleanup (void);
-
-extern void
-lk_prefs_display (void);
-
-extern void
-lk_prefs_display_applet (AppletWidget* applet, gpointer data);
-
-#endif /* _PREFERENCES_H_ */
+#endif /* _LOOKUPLET_H_ */
