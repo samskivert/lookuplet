@@ -17,6 +17,6 @@ extern void
 lk_prefs_cleanup (void);
 
 extern void
-lk_prefs_display ();
+lk_prefs_display (void);
 
 #endif /* _PREFERENCES_H_ */
