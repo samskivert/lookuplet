@@ -1,13 +1,6 @@
 #
 # $Id$
 
-INCLUDES = 						\
-	-I.						\
-	-I$(srcdir)					\
-	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\
-	-I$(includedir) $(GNOME_INCLUDEDIR)
-
 bin_PROGRAMS = lookuplet
 
 lookuplet_SOURCES = \
@@ -18,9 +11,15 @@ lookuplet_SOURCES = \
 	binding.c \
 	keysym-util.c
 
+INCLUDES = 						\
+	-I.						\
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\
+	-I$(top_srcdir)					\
+	$(GNOME_INCLUDEDIR)
+
 lookuplet_LDADD = \
 	$(GNOME_LIBDIR) \
-	$(GNOME_APPLETS_LIBS) \
+	$(GNOMEUI_LIBS) \
 	$(INTLLIBS) 
 
 # currently the installation of these bitmaps wouldn't be necessary

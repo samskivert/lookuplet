@@ -1,4 +1,4 @@
 #
 # $Id$
 
-SUBDIRS = src
+SUBDIRS = macros intl src
