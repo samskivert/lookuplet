@@ -146,7 +146,7 @@ class Lookuplet:
             print "Selection target not returned as a string.";
             return;
 
-        print "Got selection '%s'." % selection_data.data;
+        # print "Got selection '%s'." % selection_data.data;
 
         # prune spaces from the end of the text
         text = string.strip(selection_data.data);
