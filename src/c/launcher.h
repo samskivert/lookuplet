@@ -7,13 +7,9 @@
 
 #include <glib.h>
 
-extern void
-lookuplet_launcher_init (void);
-
-extern void
-lookuplet_launcher_cleanup (void);
+#include "binding.h"
 
 extern gboolean
-lookuplet_launcher_launch (const char* terms, const char* qualifier);
+lk_launcher_launch (const LkBinding* binding, const gchar* terms);
 
 #endif /* _LAUNCHER_H_ */
