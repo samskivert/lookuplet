@@ -5,7 +5,6 @@
 #include <config.h>
 #include <gnome.h>
 
-#include "entry.h"
 #include "querybox.h"
 #include "preferences.h"
 
