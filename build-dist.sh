@@ -20,7 +20,6 @@ fi
 cat > .excludes <<EOF
 build-dist.sh
 CVS
-macros
 .excludes
 .cvsignore
 *.tar.gz
