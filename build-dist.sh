@@ -23,7 +23,7 @@ CVS
 macros
 .excludes
 .cvsignore
-*.tgz
+*.tar.gz
 *~
 EOF
 
@@ -35,7 +35,7 @@ mkdir /tmp/$TARGET
 tar --exclude-from=.excludes -cf - * | tar -C /tmp/$TARGET -xf -
 
 # now build the actual archive file
-tar -C /tmp -czf $DISTDIR/$TARGET.tgz $TARGET
+tar -C /tmp -czf $DISTDIR/$TARGET.tar.gz $TARGET
 
 # and clean up after ourselves
 rm -rf /tmp/$TARGET
