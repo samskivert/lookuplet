@@ -20,12 +20,14 @@ main (int argc, char** argv)
     GtkWidget* window;
     GtkWidget* contents;
 
+#ifdef ENABLE_NLS
     /* initialize the i18n stuff */
     bindtextdomain(PACKAGE, GNOMELOCALEDIR);
     textdomain(PACKAGE);
+#endif
 
-    /* initialize gtk */
-    gtk_init(&argc, &argv);
+    /* initialize gnome */
+    gnome_init(PACKAGE, VERSION, argc, argv);
 
     /* initialize our preferences */
     lk_prefs_init();
