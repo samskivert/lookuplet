@@ -1,3 +1,10 @@
+* lookuplet-1.1 (2001-08-17)
+
+- Fixed support for running as an applet and made the code automatically
+  figure out whether or not do so.
+
+- Sorted out building things as a Debian package.
+
 * lookuplet-1.0 (2001-08-16)
 
 - Initial release.
