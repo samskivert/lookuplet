@@ -62,6 +62,9 @@ class Properties:
         self.deleteButton = xmlui.get_widget("delete");
         self.bindList = xmlui.get_widget("bindings");
 
+        # make our props panel not destroy itself on close
+        self.propsPanel.close_hides(gtk.TRUE);
+
         # wire up our handlers
         nameFuncMap = {};
         for key in dir(self.__class__):
