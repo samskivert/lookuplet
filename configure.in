@@ -67,6 +67,7 @@ AM_GNOME_GETTEXT
 dnl Create files.
 AC_OUTPUT([
 Makefile
+macros/Makefile
 intl/Makefile
 src/Makefile
 ])
