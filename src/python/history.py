@@ -18,7 +18,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-import gnome.config
+import gconf
 
 class History:
     "Used to persistently maintain a history of entries for the \
@@ -35,13 +35,13 @@ class History:
     # operation.
     #
     def __init__ (self):
-        gnome.config.push_prefix("/lookuplet/");
-        count = gnome.config.get_int("lookuplet/history/count");
-        for h in range(0, count):
-            self.history.append(gnome.config.get_string(
-                "lookuplet/history/entry_%.2u" % h));
-            # print "loaded %d: %s" % (h, self.history[h]);
-        gnome.config.pop_prefix();
+#         gnome.config.push_prefix("/lookuplet/");
+#         count = gnome.config.get_int("lookuplet/history/count");
+#         for h in range(0, count):
+#             self.history.append(gnome.config.get_string(
+#                 "lookuplet/history/entry_%.2u" % h));
+#             # print "loaded %d: %s" % (h, self.history[h]);
+#         gnome.config.pop_prefix();
         return;
 
     #
@@ -61,16 +61,16 @@ class History:
             self.history.pop(0);
 
         # flush our config to the configuration repository
-        gnome.config.push_prefix("/lookuplet/");
-        count = len(self.history);
-        gnome.config.set_int("lookuplet/history/count", count);
-        for h in range(0, count):
-            gnome.config.set_string(
-                "lookuplet/history/entry_%.2u" % h, self.history[h]);
-            # print "wrote %d: %s" % (h, self.history[h]);
-        gnome.config.sync();
-        gnome.config.drop_all();
-        gnome.config.pop_prefix();
+#         gnome.config.push_prefix("/lookuplet/");
+#         count = len(self.history);
+#         gnome.config.set_int("lookuplet/history/count", count);
+#         for h in range(0, count):
+#             gnome.config.set_string(
+#                 "lookuplet/history/entry_%.2u" % h, self.history[h]);
+#             # print "wrote %d: %s" % (h, self.history[h]);
+#         gnome.config.sync();
+#         gnome.config.drop_all();
+#         gnome.config.pop_prefix();
 
     #
     # Scans back from one before the specified index looking for a history

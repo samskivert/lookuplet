@@ -19,12 +19,16 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 import string
-import GDK
+
+import gtk
+import gtk.gdk
 
 # these are used when doing our conversion; we specifically only care
-# about Control, Shift and Mod1; if you want to use other keys in your
-# combinations, we don't want you drinking our soda
-_CODES = [ GDK.CONTROL_MASK, GDK.SHIFT_MASK, GDK.MOD1_MASK ];
+# about Control, Shift and Mod1 (Alt); if you want to use other keys in
+# your combinations, we don't want you drinking our soda
+_CODES = [ gtk.gdk.CONTROL_MASK,
+           gtk.gdk.SHIFT_MASK,
+           gtk.gdk.MOD1_MASK ];
 _NAMES = [ "Control", "Shift", "Mod1" ];
 
 #
@@ -38,9 +42,9 @@ def convert_keyval_state_to_string (keyval, state):
     # start with the empty string
     modstr = "";
 
-    # we'd like to ask GDK to convert the key itself to a string, but they
-    # don't wrap those functions. dooh!
-    # key = GDK.keyval_name(keyval);
+    # we'd like to ask gtk.gdk to convert the key itself to a string,
+    # but they don't wrap those functions. dooh!
+    # key = gtk.gdk_keyval_name(keyval);
 
     # so we do this hack instead
     if (keyval < 0 or keyval > 255):
