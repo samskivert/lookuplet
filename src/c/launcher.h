@@ -26,7 +26,7 @@
 
 #include "binding.h"
 
-extern gboolean
+extern void
 lk_launcher_launch (const LkBinding* binding, const gchar* terms);
 
 #endif /* _LAUNCHER_H_ */
