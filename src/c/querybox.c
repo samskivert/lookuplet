@@ -71,8 +71,12 @@ key_pressed (GtkWidget* widget, GdkEvent* event, gpointer callback_data)
 	    /* launch the appropriate thing */
 	    lk_launcher_launch(binding, search_text);
 	    g_free(search_text);
+#ifdef APPLET_MODE
 	    /* clear out the contents of the entry box */
 	    gtk_entry_set_text(GTK_ENTRY(widget), "");
+#else
+            gtk_exit(0);
+#endif
 	    handled = TRUE;
 	    break;
 	}
@@ -99,8 +103,12 @@ launch (GtkWidget* widget, gpointer data)
     lk_launcher_launch(NULL, search_text);
     g_free(search_text);
 
+#ifdef APPLET_MODE
     /* clear out the contents of the entry box */
     gtk_entry_set_text(GTK_ENTRY(widget), "");
+#else
+    gtk_exit(0);
+#endif
 }
 
 GtkWidget*
