@@ -84,7 +84,7 @@ main (int argc, char** argv)
 #endif
 
     if (applet_mode) {
-        /* intialize; this will basically set up the applet, corba and
+        /* initialize; this will basically set up the applet, corba and
            call gnome_init() */
         applet_widget_init(PACKAGE, VERSION, argc, argv, NULL, 0, NULL);
 

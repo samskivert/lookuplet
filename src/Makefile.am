@@ -9,7 +9,8 @@ lookuplet_SOURCES = \
 	querybox.c \
 	preferences.c \
 	binding.c \
-	keysym-util.c
+	keysym-util.c \
+	history.c
 
 INCLUDES = 						\
 	-I.						\
