@@ -1,0 +1,118 @@
+#!/usr/bin/env ruby
+#
+# $Id$
+#
+# lookuplet - a utility for quickly looking up information
+# Copyright (C) 2001-2008 Michael Bayne
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2.1 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+require 'libglade2'
+require 'bindings'
+
+class LookupletGlade
+  include GetText
+
+  attr :glade
+
+  def initialize (path_or_data, root = nil, domain = nil, localedir = nil, flag = GladeXML::FILE)
+    # initialize Glade and other bits
+    bindtextdomain(domain, localedir, nil, "UTF-8")
+    @glade = GladeXML.new(path_or_data, root, domain, localedir, flag) {|handler| method(handler)}
+
+    # load up our bindings
+    @bindings = LBindingSet.new();
+
+    # finally show the lookuplet window
+    @window = @glade.get_widget("lookuplet")
+    @window.show
+  end
+
+  def on_query_selection_received (widget, arg0, arg1)
+    puts "on_query_selection_received() is not implemented yet."
+  end
+
+  def on_query_key_press_event (query, event)
+#     # handle history browsing and auto-completion
+#     if (self.handle_special_keys(query, event) == gtk.TRUE):
+#         return gtk.TRUE;
+
+    # clear out our history prefix because it's in the text field now
+    # and we'll grab it again if we need it
+#      @hispref = None;
+#      @hisidx = -1;
+
+    # if they pressed return, map that to a special binding
+    if (event.keyval == Gdk::Keyval::GDK_Return)
+      binding = LBinding.new("", bindings.LBinding.URL, "", "%T");
+
+    else
+      # ignore plain or shifted keystrokes (TODO: this doesn't work)
+      if (event.state <= 1)
+        return Gtk.FALSE
+      end
+
+      # convert the key press into a string
+      keystr = Gdk::Keyval.to_name(event.keyval)
+      # keyval_util.convert_keyval_state_to_string(, event.state)
+
+      # look up a binding for that key string
+      binding = @bindings.get_match(keystr)
+
+      # if we didn't find one, let GTK know that we didn't handle the key press
+      if (binding.nil?)
+        return gtk.FALSE
+      end
+
+      text = query.get_text()
+      binding.invoke(text)
+      # append this entry to our history
+      @history.append(text)
+      Gtk.main_quit
+      return gtk.TRUE
+    end
+  end
+
+  def on_cancel_clicked (widget)
+    puts "on_cancel_clicked() is not implemented yet."
+  end
+
+  def on_ok_clicked (widget)
+    puts "on_ok_clicked() is not implemented yet."
+  end
+
+  def on_prefs_clicked (widget)
+    puts "on_prefs_clicked() is not implemented yet."
+  end
+
+  def on_key_key_press_event (widget, event)
+    puts "on_key_key_press_event() is not implemented yet."
+  end
+
+  def exit_lookuplet (widget)
+      Gtk.main_quit
+  end
+end
+
+# Main program
+if __FILE__ == $0
+  # Set values as your own application.
+  PROG_PATH = "../lookuplet.glade"
+  PROG_NAME = "Lookuplet"
+  PROG_VERSION = "2.0"
+  Gnome::Program.new(PROG_NAME, PROG_VERSION)
+  LookupletGlade.new(PROG_PATH, nil, PROG_NAME)
+  Gtk.main
+end
