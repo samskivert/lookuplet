@@ -7,7 +7,8 @@ GCJ=gcj-4.2
 
 SRCDIR=src/java/com/samskivert/lookuplet
 SOURCES=\
-	Lookuplet.java
+	Lookuplet.java \
+	QueryWindow.java
 
 SRCFILES=$(patsubst %.java,$(SRCDIR)/%.java,$(SOURCES))
 
