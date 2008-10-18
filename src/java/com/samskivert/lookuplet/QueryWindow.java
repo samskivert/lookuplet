@@ -4,8 +4,13 @@
 package com.samskivert.lookuplet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -25,6 +30,7 @@ public class QueryWindow
     {
         shell = new Shell(display);
         _bindings = bindings;
+        _clipboard = new Clipboard(display);
 
         RowLayout layout = new RowLayout();
         layout.center = true;
@@ -51,7 +57,22 @@ public class QueryWindow
         Button query = new Button(shell, 0);
         query.setText("Prefs");
 
+        shell.addShellListener(new ShellAdapter() {
+            public void shellActivated (ShellEvent event) {
+                onShellActivated(event);
+            }
+        });
         shell.pack();
+    }
+
+    protected void onShellActivated (ShellEvent event)
+    {
+        String text = (String)_clipboard.getContents(
+            TextTransfer.getInstance(), DND.SELECTION_CLIPBOARD);
+        if (text != null && text.length() > 0) {
+            _text.setText(text);
+            _text.selectAll();
+        }
     }
 
     protected void onTextKeyPressed (KeyEvent e)
@@ -78,5 +99,6 @@ public class QueryWindow
     }
 
     protected BindingSet _bindings;
+    protected Clipboard _clipboard;
     protected Text _text;
 }

@@ -26,3 +26,7 @@ libswt.so: swt.jar
 
 swt.o: swt.jar
 	$(GCJ)  -fjni -c swt.jar
+
+install: lookuplet
+	cp lookuplet $(HOME)/bin
+	strip $(HOME)/bin/lookuplet
