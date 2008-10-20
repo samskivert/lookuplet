@@ -87,14 +87,19 @@ public class History
      * Notes that the specified entry from the history was used. The entry is written at the zeroth
      * position, which contains our current selection.
      */
-    public void usedEntry (int index)
+    public void usedEntry (String text)
     {
-        String modded = _mods.get(index);
-        if (modded != null) {
-            _history.set(0, modded);
-        } else if (index > 0) {
-            _history.set(0, _history.remove(index));
+        // if this text appears anywhere previously in our history, move that entry to the most
+        // recent slot
+        for (int ii = 0; ii < _history.size(); ii++) {
+            if (_history.get(ii).equals(text)) {
+                _history.set(0, _history.remove(ii));
+                return;
+            }
         }
+
+        // otherwise just set this text in the most recent slot
+        _history.set(0, text);
     }
 
     /**

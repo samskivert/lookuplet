@@ -113,9 +113,9 @@ public class QueryWindow
         // locate a binding for the pressed key
         Binding binding = _bindings.getMatch(e);
         if (binding != null) {
-            maybeFlushHistory();
-            _history.usedEntry(_hpos);
-            binding.invoke(_text.getText().trim());
+            String text = _text.getText().trim();
+            _history.usedEntry(text);
+            binding.invoke(text);
             _history.save();
             shell.close();
         }
