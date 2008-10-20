@@ -26,12 +26,14 @@ import org.eclipse.swt.events.KeyEvent;
 public class BindingSet
 {
     /**
-     * Creates our binding set, reading our binding configuration from a properties file in the
+     * Creates a binding set, reading the binding configuration from a properties file in the
      * user's home directory and creating a default binding set if that reading fails or the
      * properties file does not exist.
      */
-    public BindingSet ()
+    public static BindingSet load ()
     {
+        List<Binding> bindings = new ArrayList<Binding>();
+
         File bfile = new File(System.getProperty("user.home") + BINDINGS_PATH);
         try {
             if (bfile.exists()) {
@@ -52,7 +54,7 @@ public class BindingSet
                 for (String key : bkeys) {
                     Binding binding = makeBinding(bprops, key);
                     if (binding != null) {
-                        _bindings.add(binding);
+                        bindings.add(binding);
                     }
                 }
             }
@@ -62,11 +64,13 @@ public class BindingSet
         }
 
         // if we failed to load any bindings, use our defaults
-        if (_bindings.size() == 0) {
+        if (bindings.size() == 0) {
             for (Binding binding : DEF_BINDINGS) {
-                _bindings.add(binding);
+                bindings.add(binding);
             }
         }
+
+        return new BindingSet(bindings);
     }
 
     /**
@@ -82,6 +86,11 @@ public class BindingSet
         return null;
     }
 
+    protected BindingSet (List<Binding> bindings)
+    {
+        _bindings = bindings;
+    }
+
     /**
      * Parses a binding from the supplied properties file. A string definition of the key stroke is
      * the key prefix for a binding's configuration in the properties file. An example:
@@ -94,7 +103,7 @@ public class BindingSet
      *
      * @return null if the binding parsing failed, a {@link Binding} on success.
      */
-    protected Binding makeBinding (Properties bprops, String key)
+    protected static Binding makeBinding (Properties bprops, String key)
     {
         try {
             String btype = bprops.getProperty(key + ".type", "").trim();
@@ -130,7 +139,7 @@ public class BindingSet
         }
     }
 
-    protected List<Binding> _bindings = new ArrayList<Binding>();
+    protected List<Binding> _bindings;
 
     protected static final String BINDINGS_PATH =
         File.separator + ".lookuplet" + File.separator + "bindings.properties";

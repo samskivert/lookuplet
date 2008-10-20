@@ -69,21 +69,41 @@ public class QueryWindow
     {
         String text = (String)_clipboard.getContents(
             TextTransfer.getInstance(), DND.SELECTION_CLIPBOARD);
+        if (text == null) {
+            text = "";
+        }
         if (text != null && text.length() > 0) {
             _text.setText(text);
             _text.selectAll();
         }
+        _history = History.load(text);
     }
 
     protected void onTextKeyPressed (KeyEvent e)
     {
-        // TODO: history, tab completion
-
         // escape cancels the whole business
         if (e.keyCode == SWT.ESC) {
             shell.close();
             return;
         }
+
+        // handle history
+        if (e.keyCode == SWT.ARROW_UP) {
+            if (_hpos < _history.size()-1) {
+                maybeFlushHistory();
+                _text.setText(_history.getEntry(++_hpos));
+            }
+            return;
+
+        } else if (e.keyCode == SWT.ARROW_DOWN) {
+            if (_hpos > 0) {
+                maybeFlushHistory();
+                _text.setText(_history.getEntry(--_hpos));
+            }
+            return;
+        }
+
+        // TODO: tab completion
 
         // ignore plain or shifted-only keystroes
         if (e.stateMask == 0 || e.stateMask == SWT.SHIFT) {
@@ -93,12 +113,26 @@ public class QueryWindow
         // locate a binding for the pressed key
         Binding binding = _bindings.getMatch(e);
         if (binding != null) {
+            maybeFlushHistory();
+            _history.usedEntry(_hpos);
             binding.invoke(_text.getText().trim());
+            _history.save();
             shell.close();
+        }
+    }
+
+    protected void maybeFlushHistory ()
+    {
+        String text = _text.getText().trim();
+        if (!text.equals(_history.getEntry(_hpos))) {
+            _history.modifiedEntry(_hpos, text);
         }
     }
 
     protected BindingSet _bindings;
     protected Clipboard _clipboard;
     protected Text _text;
+
+    protected History _history;
+    protected int _hpos = 0;
 }

@@ -10,6 +10,7 @@ SOURCES=\
 	Lookuplet.java \
 	Binding.java \
 	BindingSet.java \
+	History.java \
 	QueryWindow.java
 
 SRCFILES=$(patsubst %.java,$(SRCDIR)/%.java,$(SOURCES))

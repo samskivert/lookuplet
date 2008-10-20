@@ -18,7 +18,7 @@ public class Lookuplet
         Display display = new Display();
 
         // load up our bindings
-        BindingSet bindings = new BindingSet();
+        BindingSet bindings = BindingSet.load();
 
         // create our query window, center and display it
         QueryWindow query = new QueryWindow(display, bindings);
