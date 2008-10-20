@@ -1,0 +1,18 @@
+control-g.type = URL
+control-g.name Google search
+control-g.argument = http://www.google.com/search?client=googlet&q=%U
+control-d.type = EXEC 
+control-d.name = Dictionary lookup
+control-d.argument = gnome-dictionary --look-up=%T
+control-shift-d.type = URL
+control-shift-d.name = Debian package search
+control-shift-d.argument = http://cgi.debian.org/cgi-bin/search_contents.pl?word=%U&case=insensitive&version=unstable&arch=i386&directories=yes
+control-f.type = URL
+control-f.name = Freshmeat search
+control-f.argument = http://freshmeat.net/search/?q=%U
+control-i.type = URL
+control-i.name = IMDB Title search
+control-i.argument = http://www.imdb.com/Tsearch?title=%U&restrict=Movies+only
+control-b.type = URL
+control-b.name = Amazon search
+control-b.argument = http://www.amazon.com/s?url=search-alias%3Daps&field-keywords=%U&x=0&y=0
