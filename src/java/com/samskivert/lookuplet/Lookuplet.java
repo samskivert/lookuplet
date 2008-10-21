@@ -13,9 +13,25 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class Lookuplet
 {
+    public static enum OS { LINUX, MACOS, WINDOWS, OTHER };
+
+    public static OS opsys;
+
     public static void main (String[] args)
     {
         Display display = new Display();
+
+        // determine which OS we're on
+        String osname = System.getProperty("os.name", "");
+        if (osname.indexOf("Mac OS") != -1 || osname.indexOf("MacOS") != -1) {
+            opsys = OS.MACOS;
+        } else if (osname.indexOf("Linux") != -1) {
+            opsys = OS.LINUX;
+        } else if (osname.indexOf("Windows") != -1) {
+            opsys = OS.WINDOWS;
+        } else {
+            opsys = OS.OTHER;
+        }
 
         // load up our bindings
         BindingSet bindings = BindingSet.load();

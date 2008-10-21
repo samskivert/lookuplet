@@ -67,8 +67,8 @@ public class QueryWindow
 
     protected void onShellActivated (ShellEvent event)
     {
-        String text = (String)_clipboard.getContents(
-            TextTransfer.getInstance(), DND.SELECTION_CLIPBOARD);
+        int clip = Lookuplet.opsys == Lookuplet.OS.LINUX ? DND.SELECTION_CLIPBOARD : DND.CLIPBOARD;
+        String text = (String)_clipboard.getContents(TextTransfer.getInstance(), clip);
         if (text == null) {
             text = "";
         }

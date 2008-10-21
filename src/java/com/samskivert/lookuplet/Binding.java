@@ -78,7 +78,7 @@ public class Binding
         throws IOException
     {
         String[] args;
-        switch (_os) {
+        switch (Lookuplet.opsys) {
         case LINUX:
             args = new String[] { "gnome-open", url };
             break;
@@ -91,21 +91,5 @@ public class Binding
             break;
         }
         Runtime.getRuntime().exec(args);
-    }
-
-    protected static enum OS { LINUX, MACOS, WINDOWS, OTHER };
-
-    protected static OS _os;
-    static {
-        String osname = System.getProperty("os.name", "");
-        if (osname.indexOf("Mac OS") != -1 || osname.indexOf("MacOS") != -1) {
-            _os = OS.MACOS;
-        } else if (osname.indexOf("Linux") != -1) {
-            _os = OS.LINUX;
-        } else if (osname.indexOf("Windows") != -1) {
-            _os = OS.WINDOWS;
-        } else {
-            _os = OS.OTHER;
-        }
     }
 }
