@@ -1,0 +1,120 @@
+<!-- build configuration -->
+<project name="lookuplet" default="compile" basedir=".">
+
+  <!-- identify the application -->
+  <property name="app.ident" value="lookuplet"/>
+  <property name="app.name" value="Lookuplet"/>
+  <property name="app.version" value="1.0"/>
+
+  <!-- various basic settings -->
+  <property name="src.dir" value="src/java"/>
+  <property name="deploy.dir" value="dist"/>
+
+  <!-- declare our classpath -->
+  <path id="classpath">
+    <fileset dir="lib" includes="**/*.jar"/>
+    <pathelement location="${deploy.dir}/classes"/>
+  </path>
+
+  <!-- prepares the application directories -->
+  <target name="prepare">
+    <mkdir dir="${deploy.dir}"/>
+    <mkdir dir="${deploy.dir}/classes"/>
+  </target>
+
+  <!-- cleans out the built application -->
+  <target name="clean">
+    <delete dir="${deploy.dir}"/>
+  </target>
+
+  <!-- build the java class files -->
+  <target name="compile" depends="prepare">
+    <javac srcdir="${src.dir}" destdir="${deploy.dir}/classes" debug="on"
+           optimize="on" deprecation="on" includeAntRuntime="no">
+      <classpath refid="classpath"/>
+      <compilerarg value="-Xlint"/>
+      <compilerarg value="-Xlint:-serial"/>
+    </javac>
+  </target>
+
+  <!-- a target for rebuilding everything -->
+  <target name="all" depends="clean,prepare,compile,dist"/>
+
+  <!-- builds our distribution files -->
+  <target name="dist" depends="prepare,compile">
+    <jar destfile="${deploy.dir}/${app.ident}.jar" manifest="lib/manifest.mf"
+         basedir="${deploy.dir}/classes"/>
+  </target>
+
+  <!-- creates our Mac application -->
+  <target name="macapp">
+    <!-- be sure the app base directory is empty -->
+    <delete dir="${deploy.dir}/${app.name}.app"/>
+
+    <!-- create the application directory with jarbundler -->
+<!-- doesn't work due to SWT startOnFirstThread bullshit
+    <taskdef name="jarbundler" classpathref="classpath"
+             classname="com.loomcom.ant.tasks.jarbundler.JarBundler"/>
+    <jarbundler dir="${deploy.dir}" name="${app.name}" 
+                mainclass="com.samskivert.lookuplet.Lookuplet" 
+                workingdirectory="$APP_PACKAGE/Contents/Resources/Java"
+                jars="${deploy.dir}/lookuplet-pro.jar lib/native/swt-macosx.jar"
+                vmoptions="-XstartOnFirstThread -Djava.library.path=."
+                version="${app.version}"
+                jvmversion="1.5+"
+                infostring="${app.name} ${app.version}"
+                icon="etc/lookuplet.icns"
+                stubfile="etc/JavaApplicationStub"/>
+-->
+
+    <!-- create the application directory by hand, yay -->
+    <mkdir dir="${deploy.dir}/${app.name}.app"/>
+    <mkdir dir="${deploy.dir}/${app.name}.app/Contents"/>
+    <mkdir dir="${deploy.dir}/${app.name}.app/Contents/MacOS"/>
+    <mkdir dir="${deploy.dir}/${app.name}.app/Contents/Resources"/>
+    <mkdir dir="${deploy.dir}/${app.name}.app/Contents/Resources/Java"/>
+
+    <!-- copy our bits into place by hand, yay -->
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/" file="etc/Info.plist"/>
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/MacOS" file="etc/run_lookuplet"/>
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources" file="etc/lookuplet.icns"/>
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources/Java/">
+      <fileset dir="${deploy.dir}" includes="lookuplet-pro.jar"/>
+      <fileset dir="lib/native" includes="swt-macosx.jar"/>
+    </copy>
+    <exec executable="/bin/chmod">
+      <arg line="a+x"/>
+      <arg line="'${deploy.dir}/${app.name}.app/Contents/MacOS/run_lookuplet'"/>
+    </exec>
+
+    <!-- copy our native libraries into place -->
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources/Java/">
+      <fileset dir="lib/native" includes="*.jnilib"/>
+    </copy>
+  </target>
+
+  <!-- creates the Mac installer image -->
+  <target name="macimg" depends="macapp">
+    <!-- Prepare for imaging -->
+    <copy file="${ds_store}" tofile="${img.dir}/.DS_Store"/>
+    <mkdir dir="${img.dir}/.background"/>
+    <copy todir="${img.dir}/.background/" file="banner.png"/>
+
+    <copy todir="${img.dir}/">
+       <fileset dir="${deploy.dir}">
+         <include name="${app.name}/**"/>
+       </fileset>
+    </copy>
+
+    <!-- Fix permissions, no matter how silly the umask made them -->
+    <exec executable="/bin/chmod">
+      <arg line="-R"/>
+      <arg line="u+w,go-w,a+r"/>
+      <arg line="'${img.dir}'"/>
+    </exec>
+    <exec executable="/bin/chmod">
+      <arg line="a+x"/>
+      <arg line="'${img.dir}/${app.name}.app/Contents/MacOS/JavaApplicationStub'"/>
+    </exec>
+  </target>
+</project>

@@ -17,17 +17,17 @@ SOURCES=\
 SRCFILES=$(patsubst %.java,$(SRCDIR)/%.java,$(SOURCES))
 
 LDFLAGS=\
-	--CLASSPATH=swt.jar \
+	--CLASSPATH=lib/swt.jar \
 	--main=com.samskivert.lookuplet.Lookuplet
 
 lookuplet: $(SRCFILES) swt.o
 	$(GCJ) -o lookuplet $(LDFLAGS) $(SRCFILES) swt.o
 
-libswt.so: swt.jar
-	$(GCJ)  -fjni -fPIC -shared -o libswt.so swt.jar
+libswt.so: lib/swt.jar
+	$(GCJ)  -fjni -fPIC -shared -o libswt.so lib/swt.jar
 
-swt.o: swt.jar
-	$(GCJ)  -fjni -c swt.jar
+swt.o: lib/swt.jar
+	$(GCJ)  -fjni -c lib/swt.jar
 
 install: lookuplet
 	cp lookuplet $(HOME)/bin
