@@ -30,7 +30,7 @@
   <!-- build the java class files -->
   <target name="compile" depends="prepare">
     <javac srcdir="${src.dir}" destdir="${deploy.dir}/classes" debug="on"
-           optimize="on" deprecation="on" includeAntRuntime="no">
+           optimize="on" deprecation="on" includeAntRuntime="no" target="1.5">
       <classpath refid="classpath"/>
       <compilerarg value="-Xlint"/>
       <compilerarg value="-Xlint:-serial"/>
@@ -40,10 +40,16 @@
   <!-- a target for rebuilding everything -->
   <target name="all" depends="clean,prepare,compile,dist"/>
 
-  <!-- builds our distribution files -->
+  <!-- builds our executable jar file -->
   <target name="dist" depends="prepare,compile">
-    <jar destfile="${deploy.dir}/${app.ident}.jar" manifest="lib/manifest.mf"
-         basedir="${deploy.dir}/classes"/>
+    <jar destfile="${deploy.dir}/${app.ident}-linux.jar" manifest="lib/manifest.mf">
+      <fileset dir="${deploy.dir}/classes" includes="**"/>
+      <zipfileset src="lib/swt-linux.jar" excludes="META-INF/*"/>
+    </jar>
+    <jar destfile="${deploy.dir}/${app.ident}-macos.jar" manifest="lib/manifest.mf">
+      <fileset dir="${deploy.dir}/classes" includes="**"/>
+      <zipfileset src="lib/swt-macos.jar" excludes="META-INF/*"/>
+    </jar>
   </target>
 
   <!-- creates our Mac application -->
