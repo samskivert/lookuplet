@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -34,10 +36,18 @@ public class DefaultBinding extends Binding
         try {
             // if the file looks like a URL, fire it off in firefox
             if (terms.startsWith("http://") || terms.startsWith("https://") ||
-                terms.startsWith("file://")) {
+                terms.startsWith("file://") || terms.startsWith("mailto:")) {
                 terms.replaceAll(" ", ""); // strip out whitespace and
                 terms.replaceAll("\n", ""); // carriage returns
-                Runtime.getRuntime().exec("gnome-open " + terms);
+                showURL(terms);
+                return;
+            }
+
+            // if it contains something that looks like an email address, open a compose window to
+            // that address
+            Matcher m = _emailre.matcher(terms);
+            if (m.find()) {
+                showURL("mailto:" + m.group());
                 return;
             }
 
@@ -55,7 +65,7 @@ public class DefaultBinding extends Binding
 
             // otherwise fire off the words in google
             String url = GOOGLE_URL.replace("%U", URLEncoder.encode(terms, "UTF-8"));
-            Runtime.getRuntime().exec("gnome-open " + url);
+            showURL(url);
 
         } catch (Exception e) {
             e.printStackTrace(System.err);
@@ -87,5 +97,13 @@ public class DefaultBinding extends Binding
         return null;
     }
 
+    /** Originally formulated by lambert@nas.nasa.gov. */
+    protected static final String EMAIL_REGEX =
+        "([-A-Za-z0-9_.!%+]+@[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)*\\.[-a-zA-Z0-9]+)";
+
+    /** A compiled version of our email regular expression. */
+    protected static final Pattern _emailre = Pattern.compile(EMAIL_REGEX);
+
+    /** The URL via which to do a Google search. */
     protected static final String GOOGLE_URL = "http://www.google.com/search?client=googlet&q=%U";
 }

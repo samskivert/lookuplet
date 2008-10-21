@@ -3,6 +3,7 @@
 
 package com.samskivert.lookuplet;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 
 import org.eclipse.swt.events.KeyEvent;
@@ -61,7 +62,7 @@ public class Binding
             command = command.replace("%U", URLEncoder.encode(terms, "UTF-8"));
             switch (type) {
             case URL:
-                Runtime.getRuntime().exec("gnome-open " + command);
+                showURL(command);
                 break;
             case EXEC:
                 Runtime.getRuntime().exec(command);
@@ -70,6 +71,41 @@ public class Binding
 
         } catch (Exception e) {
             e.printStackTrace(System.err);
+        }
+    }
+
+    protected void showURL (String url)
+        throws IOException
+    {
+        String[] args;
+        switch (_os) {
+        case LINUX:
+            args = new String[] { "gnome-open", url };
+            break;
+        case WINDOWS:
+            args = new String[] { "cmd.exe", "/c", "start", "\"\"", "\"" + url + "\"" };
+            break;
+        default:
+        case MACOS:
+            args = new String[] { "open", url };
+            break;
+        }
+        Runtime.getRuntime().exec(args);
+    }
+
+    protected static enum OS { LINUX, MACOS, WINDOWS, OTHER };
+
+    protected static OS _os;
+    static {
+        String osname = System.getProperty("os.name", "");
+        if (osname.indexOf("Mac OS") != -1 || osname.indexOf("MacOS") != -1) {
+            _os = OS.MACOS;
+        } else if (osname.indexOf("Linux") != -1) {
+            _os = OS.LINUX;
+        } else if (osname.indexOf("Windows") != -1) {
+            _os = OS.WINDOWS;
+        } else {
+            _os = OS.OTHER;
         }
     }
 }
