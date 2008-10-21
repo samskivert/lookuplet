@@ -19,6 +19,7 @@ public class Lookuplet
 
     public static void main (String[] args)
     {
+        Display.setAppName("Lookuplet");
         Display display = new Display();
 
         // determine which OS we're on
