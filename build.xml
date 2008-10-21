@@ -40,17 +40,24 @@
   <!-- a target for rebuilding everything -->
   <target name="all" depends="clean,prepare,compile,dist"/>
 
-  <!-- builds our executable jar file -->
-  <target name="dist" depends="prepare,compile">
+  <!-- builds our executable jar files -->
+  <target name="check-dists">
+    <condition property="build.linux"><available file="lib/swt-linux.jar"/></condition>
+    <condition property="build.macos"><available file="lib/swt-macos.jar"/></condition>
+  </target>
+  <target name="dist-linux" if="build.linux">
     <jar destfile="${deploy.dir}/${app.ident}-linux.jar" manifest="lib/manifest.mf">
       <fileset dir="${deploy.dir}/classes" includes="**"/>
       <zipfileset src="lib/swt-linux.jar" excludes="META-INF/*"/>
     </jar>
+  </target>
+  <target name="dist-macos" if="build.macos">
     <jar destfile="${deploy.dir}/${app.ident}-macos.jar" manifest="lib/manifest.mf">
       <fileset dir="${deploy.dir}/classes" includes="**"/>
       <zipfileset src="lib/swt-macos.jar" excludes="META-INF/*"/>
     </jar>
   </target>
+  <target name="dist" depends="prepare,compile,check-dists,dist-linux,dist-macos"/>
 
   <!-- creates our Mac application -->
   <target name="macapp">
