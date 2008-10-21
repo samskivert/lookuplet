@@ -88,22 +88,16 @@
     <mkdir dir="${deploy.dir}/${app.name}.app/Contents/Resources/Java"/>
 
     <!-- copy our bits into place by hand, yay -->
-    <copy todir="${deploy.dir}/${app.name}.app/Contents/" file="etc/Info.plist"/>
-    <copy todir="${deploy.dir}/${app.name}.app/Contents/MacOS" file="etc/run_lookuplet"/>
-    <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources" file="etc/lookuplet.icns"/>
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/" file="lib/Info.plist"/>
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/MacOS" file="lib/run_lookuplet"/>
+    <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources" file="lib/lookuplet.icns"/>
     <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources/Java/">
-      <fileset dir="${deploy.dir}" includes="lookuplet-pro.jar"/>
-      <fileset dir="lib/native" includes="swt-macosx.jar"/>
+      <fileset dir="${deploy.dir}" includes="${app.ident}-macos.jar"/>
     </copy>
     <exec executable="/bin/chmod">
       <arg line="a+x"/>
       <arg line="'${deploy.dir}/${app.name}.app/Contents/MacOS/run_lookuplet'"/>
     </exec>
-
-    <!-- copy our native libraries into place -->
-    <copy todir="${deploy.dir}/${app.name}.app/Contents/Resources/Java/">
-      <fileset dir="lib/native" includes="*.jnilib"/>
-    </copy>
   </target>
 
   <!-- creates the Mac installer image -->

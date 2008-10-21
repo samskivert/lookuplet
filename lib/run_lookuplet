@@ -1,0 +1,4 @@
+#!/bin/sh
+
+BASEDIR=`dirname $0`
+exec java -XstartOnFirstThread -jar $BASEDIR/../Resources/Java/lookuplet-macos.jar
