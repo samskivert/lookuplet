@@ -105,8 +105,8 @@ public class QueryWindow
 
         // TODO: tab completion
 
-        // ignore plain or shifted-only keystroes
-        if (e.stateMask == 0 || e.stateMask == SWT.SHIFT) {
+        // ignore plain or shifted-only keystroes (except return which triggers the default)
+        if (e.keyCode != SWT.CR && (e.stateMask == 0 || e.stateMask == SWT.SHIFT)) {
             return;
         }
 

@@ -10,6 +10,7 @@ SOURCES=\
 	Lookuplet.java \
 	Binding.java \
 	BindingSet.java \
+	DefaultBinding.java \
 	History.java \
 	QueryWindow.java
 

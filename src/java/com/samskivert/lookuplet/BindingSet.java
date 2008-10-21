@@ -70,6 +70,9 @@ public class BindingSet
             }
         }
 
+        // finally add the default binding in every case
+        bindings.add(new DefaultBinding());
+
         return new BindingSet(bindings);
     }
 
