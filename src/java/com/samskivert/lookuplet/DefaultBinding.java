@@ -3,7 +3,9 @@
 
 package com.samskivert.lookuplet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
 import org.eclipse.swt.SWT;
@@ -39,11 +41,15 @@ public class DefaultBinding extends Binding
                 return;
             }
 
-            // if they entered an executable file on the file system run that (TODO: search the path
-            // for this file?)
-            File file = new File(terms);
-            if (file.exists() && file.canExecute()) {
-                Runtime.getRuntime().exec(terms);
+            // if they entered an executable file on the file system run that
+            String command = terms.split(" ")[0];
+            if (maybeExecute(command, terms)) {
+                return;
+            }
+
+            // see if the first word is an executable in our path
+            String output = execAndRead("which " + command);
+            if (output != null && maybeExecute(output, terms)) {
                 return;
             }
 
@@ -56,5 +62,30 @@ public class DefaultBinding extends Binding
         }
     }
 
-   protected static final String GOOGLE_URL = "http://www.google.com/search?client=googlet&q=%U";
+    protected boolean maybeExecute (String command, String terms)
+        throws Exception
+    {
+        File file = new File(command);
+        if (file.exists() && file.canExecute()) {
+            Runtime.getRuntime().exec(terms);
+            return true;
+        }
+        return false;
+    }
+
+    protected String execAndRead (String command)
+    {
+        try {
+            Process proc = Runtime.getRuntime().exec(command);
+            BufferedReader bin = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            if (proc.waitFor() == 0) {
+                return bin.readLine();
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to run '" + command + "': " + e);
+        }
+        return null;
+    }
+
+    protected static final String GOOGLE_URL = "http://www.google.com/search?client=googlet&q=%U";
 }
