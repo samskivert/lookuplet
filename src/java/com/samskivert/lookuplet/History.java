@@ -107,6 +107,12 @@ public class History
      */
     public void save ()
     {
+        // create our .lookuplet directory if necessary
+        File ldir = new File(LOOKUPLET_PATH);
+        if (!ldir.exists()) {
+            ldir.mkdir();
+        }
+
         Properties hprops = new Properties();
         for (int ii = 0, ll = Math.min(_history.size(), MAX_HISTORY_LENGTH); ii < ll; ii++) {
             hprops.setProperty(String.valueOf(ii), _history.get(ii));
@@ -129,8 +135,9 @@ public class History
     protected List<String> _history;
     protected Map<Integer, String> _mods = new HashMap<Integer, String>();
 
+    protected static final String LOOKUPLET_PATH = File.separator + ".lookuplet";
     protected static final String HISTORY_PATH =
-        File.separator + ".lookuplet" + File.separator + "history.properties";
+        LOOKUPLET_PATH + File.separator + "history.properties";
     protected static final String HISTORY_COMMENT = "Lookuplet history";
     protected static final int MAX_HISTORY_LENGTH = 32;
 }
