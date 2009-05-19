@@ -69,11 +69,9 @@ public class QueryWindow
     {
         int clip = Lookuplet.opsys == Lookuplet.OS.LINUX ? DND.SELECTION_CLIPBOARD : DND.CLIPBOARD;
         String text = (String)_clipboard.getContents(TextTransfer.getInstance(), clip);
-        if (text == null) {
-            text = "";
-        }
         if (text != null && text.length() > 0) {
-            _text.setText(text);
+            // strip out newlines and carriage returns
+            _text.setText(text.replaceAll("[\n\r]", ""));
             _text.selectAll();
         }
         _history = History.load(text);
