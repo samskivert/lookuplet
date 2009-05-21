@@ -40,6 +40,13 @@
   <!-- a target for rebuilding everything -->
   <target name="all" depends="clean,prepare,compile,dist"/>
 
+  <!-- tests the app -->
+  <target name="test" depends="clean,prepare,compile">
+    <java classpathref="classpath" fork="true" maxmemory="256M"
+          classname="com.samskivert.lookuplet.Lookuplet">
+    </java>
+  </target>
+
   <!-- builds our executable jar files -->
   <target name="check-dists">
     <condition property="build.linux"><available file="lib/swt-linux.jar"/></condition>
