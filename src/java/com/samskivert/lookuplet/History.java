@@ -92,7 +92,7 @@ public class History
         // if this text appears anywhere previously in our history, move that entry to the most
         // recent slot
         for (int ii = 0; ii < _history.size(); ii++) {
-            if (_history.get(ii).equals(text)) {
+            if (text.equals(_history.get(ii))) {
                 _history.set(0, _history.remove(ii));
                 return;
             }
