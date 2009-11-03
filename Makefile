@@ -3,7 +3,7 @@
 #
 # Simple Makefile for lookuplet
 
-GCJ=gcj-4.2
+GCJ=gcj-4.3
 
 SRCDIR=src/java/com/samskivert/lookuplet
 SOURCES=\
